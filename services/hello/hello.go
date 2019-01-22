@@ -3,17 +3,13 @@ package main
 import (
 	"bytes"
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"os"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
-	"github.com/aws/aws-sdk-go/service/rds/rdsutils"
-	"github.com/jmoiron/sqlx"
+	_ "github.com/go-sql-driver/mysql"
+	"os"
 )
 
 // Response is of type APIGatewayProxyResponse since we're leveraging the
@@ -35,15 +31,21 @@ var (
 func Handler(ctx context.Context) (Response, error) {
 
 	var buf bytes.Buffer
-	sess := session.Must(session.NewSession(&aws.Config{Region:&REGION}))
-	awsCreds := stscreds.NewCredentials(sess, "arn:aws:iam::585040772542:user/serverless")
-	authToken, err := rdsutils.BuildAuthToken(DB_HOST, REGION, DB_USER, awsCreds)
+	//sess := session.Must(session.NewSession(&aws.Config{Region:&REGION}))
+	//awsCreds := stscreds.NewCredentials(sess, "arn:aws:iam::585040772542:user/serverless")
+	//authToken, err := rdsutils.BuildAuthToken(DB_HOST, REGION, DB_USER, awsCreds)
 	dnsStr := fmt.Sprintf("%s:%s@tcp(%s)/%s?tls=true",
-		DB_USER, authToken, DB_HOST, DB_NAME)
+		DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
 
-	var db *sqlx.DB
-	db = sqlx.MustConnect("mysql", dnsStr)
-	_ = db.MustExec("CREATE TABLE IF NOT EXISTS USER (user_id VARCHAR(50));")
+	//var db *sqlx.DB
+	db, err := sql.Open("mysql", dnsStr)
+	if err != nil {
+		panic(err)
+	}
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS USER (user_id VARCHAR(50));")
+	if err != nil {
+		panic(err)
+	}
 	body, err := json.Marshal(map[string]interface{}{
 		"message": "RDS Connected",
 	})
