@@ -24,7 +24,14 @@ provider:
 
 # you can overwrite defaults here
 #  stage: dev
-#  region: us-east-1
+ region: ap-southeast-1
+ vpc:
+  securityGroupIds:
+    - rds-launch-wizard (sg-0386f7b35e38c663a)
+  subnetIds:
+    - subnet-4372b01a
+    - subnet-1f627478
+    - subnet-3485827d
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -43,8 +50,13 @@ provider:
 #            - "/*"
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+ environment:
+   DB_NAME: plancong-db
+   DB_PASSWORD: qorielvanramboy3
+   DB_PORT: 3306
+   DB_HOST: plancong-db.cyfypmk9yj7i.ap-southeast-1.rds.amazonaws.com
+   DB_USER: connacle
+   REGION: ap-southeast-1
 
 package:
  exclude:
@@ -95,12 +107,12 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
+resources:
+ Resources:
+   Database:
+     Type: AWS::RDS::DBInstance
+     Properties:
+       BucketName: my-new-bucket
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
