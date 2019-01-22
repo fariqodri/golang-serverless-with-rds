@@ -34,11 +34,14 @@ provider:
       - subnet-3485827d
 
 # you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
 #        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+        - ec2:CreateNetworkInterface
+        - ec2:DescribeNetworkInterfaces
+        - ec2:DeleteNetworkInterface
+      Resource: *
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
@@ -107,23 +110,23 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-resources:
-  Resources:
-    AWSLambdaVPCAccessExecutionRole:
-      Type: AWS::IAM::ManagedPolicy
-      Properties:
-        Description: Creating policy for vpc connetion.
-        Roles:
-          - {"Ref": "IamRoleLambdaExecution"}
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - ec2:CreateNetworkInterface
-                - ec2:DescribeNetworkInterfaces
-                - ec2:DeleteNetworkInterface
-              Resource: "*"
+#resources:
+#  Resources:
+#    AWSLambdaVPCAccessExecutionRole:
+#      Type: AWS::IAM::ManagedPolicy
+#      Properties:
+#        Description: Creating policy for vpc connetion.
+#        Roles:
+#          - {"Ref": "IamRoleLambdaExecution"}
+#        PolicyDocument:
+#          Version: '2012-10-17'
+#          Statement:
+#            - Effect: Allow
+#              Action:
+#                - ec2:CreateNetworkInterface
+#                - ec2:DescribeNetworkInterfaces
+#                - ec2:DeleteNetworkInterface
+#              Resource: "*"
 # Resources:
 #   Database:
 #     Type: AWS::RDS::DBInstance
