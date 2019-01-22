@@ -12,5 +12,5 @@ clean:
 
 deploy: clean build
 	SHELL=/bin/bash
-	chmod +x ./scripts/clean.sh
+	chmod +x ./scripts/deploy.sh
 	./scripts/deploy.sh
