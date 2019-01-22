@@ -5,10 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
 	"os"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
+	"github.com/aws/aws-sdk-go/service/rds/rdsutils"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -31,10 +35,11 @@ var (
 func Handler(ctx context.Context) (Response, error) {
 
 	var buf bytes.Buffer
-	//sess := session.Must(session.NewSession(&aws.Config{Region:&REGION}))
-	//awsCreds := stscreds.NewCredentials(sess, "arn:aws:iam::585040772542:user/serverless")
-	//b := rdsutils.NewConnectionStringBuilder(DB_HOST, REGION, DB_USER, DB_NAME, awsCreds)
-	dnsStr := fmt.Sprintf("%s:%s@tcp(%s)/%s", DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
+	sess := session.Must(session.NewSession(&aws.Config{Region:&REGION}))
+	awsCreds := stscreds.NewCredentials(sess, "arn:aws:iam::585040772542:user/serverless")
+	authToken, err := rdsutils.BuildAuthToken(DB_HOST, REGION, DB_USER, awsCreds)
+	dnsStr := fmt.Sprintf("%s:%s@tcp(%s)/%s?tls=true",
+		DB_USER, authToken, DB_HOST, DB_NAME)
 
 	var db *sqlx.DB
 	db = sqlx.MustConnect("mysql", dnsStr)
