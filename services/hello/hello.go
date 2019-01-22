@@ -40,11 +40,12 @@ func Handler(ctx context.Context) (Response, error) {
 	//var db *sqlx.DB
 	db, err := sql.Open("mysql", dnsStr)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
+	defer db.Close()
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS USER (user_id VARCHAR(50));")
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	body, err := json.Marshal(map[string]interface{}{
 		"message": "RDS Connected",
