@@ -25,7 +25,6 @@ provider:
 # you can overwrite defaults here
 #  stage: dev
   region: ap-southeast-1
-  role: arn:aws:iam::585040772542:role/hello-dev-ap-southeast-1-lambdaRole
   vpc:
     securityGroupIds:
       - rds-launch-wizard (sg-0386f7b35e38c663a)
@@ -35,22 +34,22 @@ provider:
       - subnet-3485827d
 
 # you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "ec2:CreateNetworkInterface"
-#        - "ec2:DescribeNetworkInterfaces"
-#        - "ec2:DeleteNetworkInterface"
-#      Resource: "*"
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DeleteNetworkInterface"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "ServerlessDeploymentBucket"
+            - "/*"
 
 # you can define service wide environment variables here
   environment:
@@ -110,22 +109,6 @@ functions:
 
 # you can add CloudFormation resource templates here
 #resources:
-#  Resources:
-#    AWSLambdaVPCAccessExecutionRole:
-#      Type: AWS::IAM::ManagedPolicy
-#      Properties:
-#        Description: Creating policy for vpc connetion.
-#        Roles:
-#          - {"Ref": "IamRoleLambdaExecution"}
-#        PolicyDocument:
-#          Version: '2012-10-17'
-#          Statement:
-#            - Effect: Allow
-#              Action:
-#                - ec2:CreateNetworkInterface
-#                - ec2:DescribeNetworkInterfaces
-#                - ec2:DeleteNetworkInterface
-#              Resource: "*"
 # Resources:
 #   Database:
 #     Type: AWS::RDS::DBInstance
