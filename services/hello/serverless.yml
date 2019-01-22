@@ -25,6 +25,7 @@ provider:
 # you can overwrite defaults here
 #  stage: dev
   region: ap-southeast-1
+  role: arn:aws:iam::585040772542:role/lambda-vpc-role
   vpc:
     securityGroupIds:
       - rds-launch-wizard (sg-0386f7b35e38c663a)
@@ -59,7 +60,6 @@ provider:
     DB_PORT: 3306
     DB_HOST: plancong-db.cyfypmk9yj7i.ap-southeast-1.rds.amazonaws.com
     DB_USER: connacle
-    REGION: ap-southeast-1
 
 package:
  exclude:
