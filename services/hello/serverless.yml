@@ -52,12 +52,8 @@ provider:
             - "/*"
 
 # you can define service wide environment variables here
-  environment:
-    DB_NAME: connacle
-    DB_PASSWORD: qorielvanramboy3
-    DB_PORT: 3306
-    DB_HOST: plancong-db.cyfypmk9yj7i.ap-southeast-1.rds.amazonaws.com
-    DB_USER: connacle
+#  environment:
+
 
 package:
  exclude:
