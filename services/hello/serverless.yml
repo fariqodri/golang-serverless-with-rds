@@ -27,7 +27,7 @@ provider:
   region: ap-southeast-1
   vpc:
     securityGroupIds:
-      - rds-launch-wizard (sg-0386f7b35e38c663a)
+      - sg-0386f7b35e38c663a
     subnetIds:
       - subnet-4372b01a
       - subnet-1f627478
