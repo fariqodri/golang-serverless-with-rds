@@ -16,16 +16,18 @@ import (
 // https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
 type Response events.APIGatewayProxyResponse
 
+
 // Handler is our lambda handler invoked by the `lambda.Start` function call
 func Handler(ctx context.Context) (Response, error) {
 
 	var buf bytes.Buffer
+	//sess := session.Must(session.NewSession(&aws.Config{Region:&REGION}))
+	//awsCreds := stscreds.NewCredentials(sess, "arn:aws:iam::585040772542:user/serverless")
+	//authToken, err := rdsutils.BuildAuthToken(DB_HOST, REGION, DB_USER, awsCreds)
+
 	db := database.GetDatabase()
 	defer db.Close()
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS USER (user_id VARCHAR(50));")
-	if err != nil {
-		panic(err.Error())
-	}
+
 	body, err := json.Marshal(map[string]interface{}{
 		"message": "RDS Connected",
 	})
