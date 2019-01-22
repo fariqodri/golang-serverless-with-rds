@@ -25,6 +25,7 @@ provider:
 # you can overwrite defaults here
 #  stage: dev
   region: ap-southeast-1
+  role: arn:aws:iam::585040772542:role/hello-dev-ap-southeast-1-lambdaRole
   vpc:
     securityGroupIds:
       - rds-launch-wizard (sg-0386f7b35e38c663a)
@@ -34,13 +35,13 @@ provider:
       - subnet-3485827d
 
 # you can add statements to the Lambda function's IAM Role here
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "ec2:CreateNetworkInterface"
-        - "ec2:DescribeNetworkInterfaces"
-        - "ec2:DeleteNetworkInterface"
-      Resource: "*"
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "ec2:CreateNetworkInterface"
+#        - "ec2:DescribeNetworkInterfaces"
+#        - "ec2:DeleteNetworkInterface"
+#      Resource: "*"
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
